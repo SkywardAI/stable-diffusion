@@ -1,6 +1,13 @@
+# check if Debian or macOS
+ifeq ($(shell uname -s), Darwin)
+.PONY: env
+env:
+	brew install cmake protobuf rust python@3.10 git wget
+else ifeq ($(shell uname -s), Linux)
 .PONY: env
 env:
 	sudo apt update && sudo apt install wget git python3 python3-venv ffmpeg libsm6 libxext6 -y
+endif
 
 .PONY: webui
 webui:
