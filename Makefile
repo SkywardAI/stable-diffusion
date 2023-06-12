@@ -24,10 +24,17 @@ controlnet:
 .PONY: ctmodel
 ctmodel:
 	cd stable-diffusion-webui/extensions/sd-webui-controlnet/models && wget https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15s2_lineart_anime.pth -O control_v11p_sd15s2_lineart_anime.pth
+	cd stable-diffusion-webui/extensions/sd-webui-controlnet/models && wget https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth -O control_v11f1e_sd15_tile.pth
 
+ifeq ($(shell uname -s), Darwin)
+.PONY: run
+run:
+	cd stable-diffusion-webui && ./webui.sh --skip-torch-cuda-test --no-half --opt-split-attention-v1 --lowram
+else ifeq ($(shell uname -s), Linux)
 .PONY: run
 run:
 	cd stable-diffusion-webui && ./webui.sh --skip-torch-cuda-test --no-half
+endif
 
 .PONY: prepare
 prepare: env webui controlnet
